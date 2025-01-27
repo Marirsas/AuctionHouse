@@ -8,5 +8,7 @@ namespace AuctionHouse.WebAPI.Data {
         public DbSet<Item> Items { get; set; }
 
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Sale> Sales { get; set; }
     }
 }

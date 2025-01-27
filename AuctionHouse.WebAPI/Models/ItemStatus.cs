@@ -1,5 +1,5 @@
 ﻿namespace AuctionHouse.WebAPI.Models {
     public enum ItemStatus {
-        Avaiable = 0, Sold = 1
+        Available = 0, Sold = 1
     }
 }

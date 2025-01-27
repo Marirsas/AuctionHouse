@@ -9,14 +9,14 @@ namespace AuctionHouse.WebAPI.Models {
 
 
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
 
         [MaxLength (150)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
 
-        public ICollection<Item> ItemList { get; set; }
+        public ICollection<Item>? Items { get; set; }
 
     }
 }
