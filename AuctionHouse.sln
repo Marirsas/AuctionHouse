@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35431.28
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionHouse.WebAPI", "AuctionHouse.WebAPI\AuctionHouse.WebAPI.csproj", "{2ACBD11D-F23F-4D2E-940D-F991F7D00658}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2ACBD11D-F23F-4D2E-940D-F991F7D00658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ACBD11D-F23F-4D2E-940D-F991F7D00658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ACBD11D-F23F-4D2E-940D-F991F7D00658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ACBD11D-F23F-4D2E-940D-F991F7D00658}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {552C0C06-B8DF-4280-9849-C1F0A233CA57}
+	EndGlobalSection
+EndGlobal
