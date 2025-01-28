@@ -7,6 +7,7 @@ namespace AuctionHouse.WebAPI.AutoMapper {
         public AutoMapperProfile() {
             CreateMap<Item, ItemDTO>().ReverseMap();
             CreateMap<Category, CategoryDTO>().ReverseMap();
+            CreateMap<Sale, SaleDTO>().ReverseMap();
         }
     }
 }

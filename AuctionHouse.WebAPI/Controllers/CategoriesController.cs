@@ -1,121 +1,94 @@
 ﻿using AuctionHouse.WebAPI.Data;
 using AuctionHouse.WebAPI.DTO;
 using AuctionHouse.WebAPI.Models;
+using AuctionHouse.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuctionHouse.WebAPI.Controllers {
+namespace AuctionHouse.WebAPI.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase {
-        private readonly AuctionHouseContext context;
-        public CategoriesController(AuctionHouseContext auctionContext) => context = auctionContext;
+
+        private readonly ICategoriesService categoryService;
+        public CategoriesController(ICategoriesService categoryService) => this.categoryService = categoryService;
+
 
         [HttpGet]
         public ActionResult<IEnumerable<CategoryDTO>> GetCategories() {
 
-            if (this.context.Categories == null) {
+            if (categoryService.GetCategories() == null) {
                 return BadRequest();
             }
 
-            var categories = context.Categories
-                            .Select(CategoryDTO.categoryToDTO
-                            )
-                            .ToList();
+            return Ok(categoryService.GetCategories());
 
-            return Ok(categories);
-        }
-
-        [HttpGet("wItems")]
-        public ActionResult<IEnumerable<CategoryDTO>> GetCategoriesWithItems() {
-
-            if (this.context.Categories == null) {
-                return BadRequest();
-            }
-
-            var categories = context.Categories.Include(i=> i.Items)
-                            .Select(CategoryDTO.categoryToDTO
-                            )
-                            .ToList();
-
-            return Ok(categories);
-        }
-
-        [HttpGet("wItems/{id}")]
-        public ActionResult<IEnumerable<CategoryDTO>> GetCategoryWithItems(int id) {
-
-            if (this.context.Categories == null) {
-                return BadRequest();
-            }
-
-            var category = context.Categories.Include(i=> i.Items).SingleOrDefault(c => c.Id == id);
-
-            return Ok(CategoryDTO.categoryToDTO(category));
         }
 
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<CategoryDTO>> GetCategory(int id) {
 
-            if (this.context.Categories == null) {
-                return BadRequest();
-            }
+            try {
+                var category = categoryService.GetCategory(id);
 
-            var category = context.Categories.SingleOrDefault(c => c.Id == id); 
-            
-            if (category == null) {
-                return NotFound();
-            }
+                if (category == null) {
+                    return BadRequest();
+                }
 
-            return Ok(CategoryDTO.categoryToDTO(category));
+                return Ok(category);
+            }
+            catch (ArgumentNullException e) {
+
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
-        public ActionResult<Category> AddCategory(Category cat) {
-            if (this.context.Categories == null)
-                return BadRequest();
+        public ActionResult<CategoryDTO> AddCategory(CategoryDTO categoryDTO) {
 
-            this.context.Categories.Add(cat);
-            this.context.SaveChanges();
-
-            return CreatedAtAction(nameof(AddCategory), new { id = cat.Id }, cat);
-        }
-
-
-        [HttpPut("{id}")]
-        public ActionResult<Category> UpdateCategory(int id, Category cat) {
-            if (this.context.Categories == null)
-                return BadRequest();
-
-
-            if (id != cat.Id) {
+            if (categoryDTO == null) {
                 return BadRequest();
             }
-            
 
-            this.context.Entry(cat).State = EntityState.Modified;
-            this.context.SaveChanges();
+            categoryService.AddCategory(categoryDTO);
 
-            return Ok();
+            return CreatedAtAction(nameof(AddCategory), new { id = categoryDTO.Id }, categoryDTO);
         }
 
+        [HttpPut("{id}")]
+        public ActionResult<CategoryDTO> UpdateCategory(int id, CategoryDTO categoryDTO) {
+
+            if (categoryService.UpdateCategory(id, categoryDTO) == null) {
+                return BadRequest();
+            }
+
+            try {
+                categoryService.UpdateCategory(id, categoryDTO);
+                return Ok();
+            }
+            catch (ArgumentNullException e) {
+                return BadRequest(e.Message);
+            }
+            catch (ArgumentException g) {
+                return BadRequest(g.Message);
+            }
+        }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteCategory(int id) {
-            if (this.context.Categories == null)
+            if (categoryService.RemoveCategory(id) == null) {
                 return BadRequest();
-
-            if (!this.context.Categories.Any(i => i.Id == id)) {
-                return NotFound();
             }
 
-            this.context.Categories.Remove(new Category { Id = id });
-            this.context.SaveChanges();
-
-            return NoContent();
+            try {
+                categoryService.RemoveCategory(id);
+                return NoContent();
+            }
+            catch (ArgumentException e) {
+                return NotFound(e.Message);
+            }
         }
-
-
-
     }
 }

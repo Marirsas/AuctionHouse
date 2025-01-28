@@ -9,15 +9,6 @@ namespace AuctionHouse.WebAPI.DTO {
         public int CategoryId { get; set; }
         public ItemStatus ItemStatus { get; set; }
 
-        public ItemDTO(int id, string name, string description, decimal initialPrice, int categoryId, ItemStatus itemStatus) {
-            Id = id;
-            Name = name;
-            Description = description;
-            InitialPrice = initialPrice;
-            CategoryId = categoryId;
-            ItemStatus = itemStatus;
-        }
-
     }
 
 }
