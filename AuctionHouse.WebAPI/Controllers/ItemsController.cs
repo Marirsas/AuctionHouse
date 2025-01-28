@@ -4,85 +4,87 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AuctionHouse.WebAPI.DTO;
 using Microsoft.EntityFrameworkCore;
+using AuctionHouse.WebAPI.Services;
 
 namespace AuctionHouse.WebAPI.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class ItemsController : ControllerBase {
-        private readonly AuctionHouseContext context;
+        private readonly IItem itemService;
 
-        public ItemsController(AuctionHouseContext auctionContext) => context = auctionContext;
+
+        public ItemsController(IItem item) {
+            itemService = item;
+        }
 
 
         [HttpGet]
         public ActionResult<IEnumerable<ItemDTO>> GetItems() {
 
-            if (this.context.Items == null) {
+            if (itemService.GetItems() == null) {
                 return BadRequest();
             }
 
-            var items = context.Items
-                            .Select(ItemDTO.itemToDTO)
-                            .ToList();
-
-            return Ok(items);
+            return Ok(itemService.GetItems());
         }
 
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<ItemDTO>> GetItem(int id) {
+        public ActionResult<ItemDTO> GetItem(int id) {
 
-            if (this.context.Items == null) {
-                return BadRequest();
+            try {
+                var item = itemService.GetItem(id);
+
+                if (item == null) {
+                    return BadRequest();
+                }
+
+                return Ok(item);
+
+            }
+            catch (ArgumentNullException e) {
+
+                return NotFound(e.Message);
             }
 
-            var item = context.Items.SingleOrDefault(i => i.Id == id);
-            
-            if (item == null) {
-                return NotFound();
-            }          
-
-            return Ok(ItemDTO.itemToDTO(item));
         }
 
         [HttpGet("available")]
         public ActionResult<IEnumerable<ItemDTO>> GetItemsAvailable() {
 
-            if (this.context.Items == null) {
+            if (itemService.GetItemsAvailable() == null) {
                 return BadRequest();
             }
 
-            var itemsAvailable = context.Items
-                            .Where(i => i.ItemStatus == ItemStatus.Available)
-                            .Select(ItemDTO.itemToDTO)
-                            .ToList();
-
-            return Ok(itemsAvailable);
+            return Ok(itemService.GetItemsAvailable());
         }
 
         [HttpGet("sold")]
         public ActionResult<IEnumerable<ItemDTO>> GetItemsSold() {
 
-            if (this.context.Items == null) {
+            if (itemService.GetItemsSold() == null) {
                 return BadRequest();
             }
 
-            var itemsSold = context.Items
-                            .Where(i => i.ItemStatus == ItemStatus.Sold)
-                            .Select(ItemDTO.itemToDTO)
-                            .ToList();
-
-            return Ok(itemsSold);
+            return Ok(itemService.GetItemsSold());
         }
 
 
         [HttpPost]
-        public ActionResult<Item> AddItem(Item item) {
-            if (this.context.Items == null)
-                return BadRequest();
-                
-            this.context.Items.Add(item);
-            this.context.SaveChanges();
+        public ActionResult<ItemDTO> AddItem(ItemDTO item) {
+            try {
+                itemService.AddItem(item);
+
+                if (itemService.AddItem(item) == null) {
+                    return BadRequest();
+                }
+            }
+            catch (ArgumentNullException e) {
+                return BadRequest(e.Message);
+            }
+
+
+
 
             return CreatedAtAction(nameof(GetItem), new { id = item.Id }, item);
         }
@@ -96,6 +98,11 @@ namespace AuctionHouse.WebAPI.Controllers {
 
             if (id != item.Id) {
                 return BadRequest();
+            }
+
+            var itemTemp = context.Items.SingleOrDefault(i => i.Id == id);
+            if (itemTemp.ItemStatus == ItemStatus.Sold) {
+                return BadRequest(itemTemp.ItemStatus.ToString());
             }
 
             this.context.Entry(item).State = EntityState.Modified;

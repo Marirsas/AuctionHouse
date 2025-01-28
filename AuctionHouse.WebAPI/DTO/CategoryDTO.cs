@@ -31,12 +31,6 @@ namespace AuctionHouse.WebAPI.DTO {
             return itemsDTO;
         }
 
-        public static CategoryDTO? categoryToDTO(Category? category) {
-            if (category != null) {
-                return new CategoryDTO(category.Id, category.Name, category.Description, category.Items);
-            }
-            return null;
-        }
 
     }
 }

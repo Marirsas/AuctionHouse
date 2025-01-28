@@ -24,7 +24,7 @@ namespace AuctionHouse.WebAPI.Models {
         public Category? Category { get; set; }
 
 
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
 
         public ItemStatus ItemStatus { get; set; }

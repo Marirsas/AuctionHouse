@@ -18,12 +18,6 @@ namespace AuctionHouse.WebAPI.DTO {
             ItemStatus = itemStatus;
         }
 
-        public static ItemDTO? itemToDTO(Item? item) {
-            if (item != null) {
-                return new ItemDTO(item.Id, item.Name, item.Description, item.InitialPrice, item.CategoryId, item.ItemStatus);
-            }
-            return null;
-        }
     }
 
 }

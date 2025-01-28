@@ -91,6 +91,7 @@ namespace AuctionHouse.WebAPI.Controllers {
             if (id != cat.Id) {
                 return BadRequest();
             }
+            
 
             this.context.Entry(cat).State = EntityState.Modified;
             this.context.SaveChanges();
