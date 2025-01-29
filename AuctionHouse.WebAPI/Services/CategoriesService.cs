@@ -56,14 +56,15 @@ namespace AuctionHouse.WebAPI.Services
                 return null;
             }
 
-            if (this.context.Categories.Find(id) == null || this.context.Categories.Any(c => c.Id == id)) {
-                throw new ArgumentException("Category not found!");
+            var category = this.context.Categories.SingleOrDefault(c => c.Id == id);
+            if (category == null) {
+               return null;
             }
 
-            this.context.Categories.Remove(new Category { Id = id });
+            this.context.Categories.Remove(category);
             this.context.SaveChanges();
 
-            return mapper.Map<CategoryDTO>(context.Categories.Find(id));
+            return mapper.Map<CategoryDTO>(category);
         }
 
         public CategoryDTO UpdateCategory(int id, CategoryDTO categoryDTO) {
@@ -75,18 +76,16 @@ namespace AuctionHouse.WebAPI.Services
                 throw new ArgumentException("The ID provided doesn't match the ID of the category to be updated");
             }
 
-            var categoryCheck = context.Categories.SingleOrDefault(c => c.Id == categoryDTO.Id);
-            if (categoryCheck == null) {
-                throw new ArgumentNullException("Category doesn't exists!");
+            var existingCategory = context.Categories.Find(id);
+            if (existingCategory == null) {
+                throw new ArgumentNullException("Category doesn't exist!");
             }
 
-            var updatedCategory = mapper.Map<Category>(categoryDTO);
-            this.context.Entry(updatedCategory).State = EntityState.Modified;
+            mapper.Map(categoryDTO, existingCategory);
+            context.Entry(existingCategory).State = EntityState.Modified;
             this.context.SaveChanges();
 
-            return mapper.Map<CategoryDTO>(updatedCategory);
+            return mapper.Map<CategoryDTO>(existingCategory);
         }
-
-
     }
 }

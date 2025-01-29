@@ -16,7 +16,7 @@ namespace AuctionHouse.WebAPI.Models {
         public DateOnly DateOfSale { get; set; }
 
 
-        [Column(TypeName = "decimal(9, 2)")]
+        [Column(TypeName = "decimal(15, 2)")]
         public decimal SalePrice { get; set; }
 
 

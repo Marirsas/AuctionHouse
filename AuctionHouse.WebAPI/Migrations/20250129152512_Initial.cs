@@ -33,7 +33,7 @@ namespace AuctionHouse.WebAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    InitialPrice = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    InitialPrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     ItemStatus = table.Column<int>(type: "int", nullable: false)
                 },
@@ -56,7 +56,7 @@ namespace AuctionHouse.WebAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ItemId = table.Column<int>(type: "int", nullable: false),
                     DateOfSale = table.Column<DateOnly>(type: "date", nullable: false),
-                    SalePrice = table.Column<decimal>(type: "decimal(9,2)", nullable: false)
+                    SalePrice = table.Column<decimal>(type: "decimal(15,2)", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuctionHouse.WebAPI.Controllers
-{
+namespace AuctionHouse.WebAPI.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase {
@@ -52,9 +51,9 @@ namespace AuctionHouse.WebAPI.Controllers
                 return BadRequest();
             }
 
-            categoryService.AddCategory(categoryDTO);
+            var newCategory = categoryService.AddCategory(categoryDTO);
 
-            return CreatedAtAction(nameof(AddCategory), new { id = categoryDTO.Id }, categoryDTO);
+            return CreatedAtAction(nameof(GetCategory), new { id = newCategory }, newCategory);
         }
 
         [HttpPut("{id}")]
@@ -65,8 +64,7 @@ namespace AuctionHouse.WebAPI.Controllers
             }
 
             try {
-                categoryService.UpdateCategory(id, categoryDTO);
-                return Ok();
+                return Ok(categoryService.UpdateCategory(id, categoryDTO));
             }
             catch (ArgumentNullException e) {
                 return BadRequest(e.Message);
@@ -77,18 +75,13 @@ namespace AuctionHouse.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCategory(int id) {
+        public IActionResult RemoveCategory(int id) {
             if (categoryService.RemoveCategory(id) == null) {
                 return BadRequest();
             }
 
-            try {
-                categoryService.RemoveCategory(id);
-                return NoContent();
-            }
-            catch (ArgumentException e) {
-                return NotFound(e.Message);
-            }
+            categoryService.RemoveCategory(id);
+            return NoContent();
         }
     }
 }

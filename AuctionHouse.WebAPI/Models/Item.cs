@@ -17,7 +17,7 @@ namespace AuctionHouse.WebAPI.Models {
         public string? Description { get; set; }
 
 
-        [Column(TypeName = "decimal(6, 2)")]
+        [Column(TypeName = "decimal(10, 2)")]
         public decimal InitialPrice {  get; set; }
 
 

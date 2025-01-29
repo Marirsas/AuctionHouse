@@ -113,15 +113,16 @@ namespace AuctionHouse.WebAPI.Services
             if (this.context.Items == null) {
                 return null;
             }
-                        
-            if (this.context.Items.Find(id) == null || this.context.Items.Any(i => i.Id == id)) {
-                throw new ArgumentException("Item not found!");
+
+            var item = context.Items.SingleOrDefault(i => i.Id == id);
+            if (item == null) {
+                return null;
             }
 
-            this.context.Items.Remove(new Item { Id = id });
+            this.context.Items.Remove(item);
             this.context.SaveChanges();
 
-            return mapper.Map<ItemDTO>(context.Items.Find(id));
+            return mapper.Map<ItemDTO>(item);
         }
 
         public ItemDTO UpdateItem(int id, ItemDTO itemDTO) {
@@ -143,20 +144,11 @@ namespace AuctionHouse.WebAPI.Services
             if (category == null) {
                 throw new ArgumentNullException("Category doesn't exists!");
             }
-
-            var item = new Item {
-                Name = itemDTO.Name,
-                Description = itemDTO.Description,
-                InitialPrice = itemDTO.InitialPrice,
-                ItemStatus = itemDTO.ItemStatus,
-                CategoryId = itemDTO.CategoryId,
-                Category = category
-            };
-
-            this.context.Entry(item).State = EntityState.Modified;
+            mapper.Map(itemDTO, itemToCheckStatus);
+            this.context.Entry(itemToCheckStatus).State = EntityState.Modified;
             this.context.SaveChanges();
 
-            return mapper.Map<ItemDTO>(item);
+            return mapper.Map<ItemDTO>(itemToCheckStatus);
         }
 
         public bool UpdateItemStatus(int itemId) {

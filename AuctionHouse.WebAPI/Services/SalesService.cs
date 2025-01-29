@@ -10,9 +10,9 @@ namespace AuctionHouse.WebAPI.Services {
 
         private readonly AuctionHouseContext context;
         private readonly IMapper mapper;
-        private readonly ItemsService itemsService;
+        private readonly IItemsService itemsService;
 
-        public SalesService(IMapper mapper, AuctionHouseContext auctionContext, ItemsService itemsService) {
+        public SalesService(IMapper mapper, AuctionHouseContext auctionContext, IItemsService itemsService) {
             this.mapper = mapper;
             context = auctionContext;
             this.itemsService = itemsService;

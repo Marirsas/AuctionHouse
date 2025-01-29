@@ -59,7 +59,7 @@ namespace AuctionHouse.WebAPI.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<decimal>("InitialPrice")
-                        .HasColumnType("decimal(6, 2)");
+                        .HasColumnType("decimal(10, 2)");
 
                     b.Property<int>("ItemStatus")
                         .HasColumnType("int");
@@ -90,7 +90,7 @@ namespace AuctionHouse.WebAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("SalePrice")
-                        .HasColumnType("decimal(9, 2)");
+                        .HasColumnType("decimal(15, 2)");
 
                     b.HasKey("Id");
 
@@ -102,7 +102,7 @@ namespace AuctionHouse.WebAPI.Migrations
             modelBuilder.Entity("AuctionHouse.WebAPI.Models.Item", b =>
                 {
                     b.HasOne("AuctionHouse.WebAPI.Models.Category", "Category")
-                        .WithMany("Items")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -119,11 +119,6 @@ namespace AuctionHouse.WebAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("AuctionHouse.WebAPI.Models.Category", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
