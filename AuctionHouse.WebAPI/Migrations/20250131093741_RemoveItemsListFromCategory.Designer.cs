@@ -4,6 +4,7 @@ using AuctionHouse.WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuctionHouse.WebAPI.Migrations
 {
     [DbContext(typeof(AuctionHouseContext))]
-    partial class AuctionHouseContextModelSnapshot : ModelSnapshot
+    [Migration("20250131093741_RemoveItemsListFromCategory")]
+    partial class RemoveItemsListFromCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
