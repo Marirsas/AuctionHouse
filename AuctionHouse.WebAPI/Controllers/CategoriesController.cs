@@ -2,6 +2,7 @@
 using AuctionHouse.WebAPI.DTO;
 using AuctionHouse.WebAPI.Models;
 using AuctionHouse.WebAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// </summary>
         /// <param name="categoryDTO">The category data to add.</param>
         /// <returns>The created CategoryDTO object.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult<CategoryDTO> AddCategory(CategoryDTO categoryDTO) {
 
@@ -75,6 +77,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// <param name="id">The ID of the category to update.</param>
         /// <param name="categoryDTO">The updated category data.</param>
         /// <returns>The updated CategoryDTO object.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public ActionResult<CategoryDTO> UpdateCategory(int id, CategoryDTO categoryDTO) {
 
@@ -97,6 +100,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// </summary>
         /// <param name="id">The ID of the category to remove.</param>
         /// <returns>No content if successful.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult RemoveCategory(int id) {
             try {

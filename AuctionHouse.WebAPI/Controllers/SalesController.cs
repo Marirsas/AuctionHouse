@@ -1,5 +1,6 @@
 ﻿using AuctionHouse.WebAPI.DTO;
 using AuctionHouse.WebAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// Gets all sales.
         /// </summary>
         /// <returns>A list of sales.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult<IEnumerable<SaleDTO>> GetSales() {
             var sales = salesService.GetSales();
@@ -35,6 +37,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// </summary>
         /// <param name="categoryId">The category identifier.</param>
         /// <returns>A list of sales for the specified category.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpGet("category/{categoryId}")]
         public ActionResult<IEnumerable<SaleDTO>> GetSalesByItemCategory(int categoryId) {
             var sales = salesService.GetSalesByItemCategory(categoryId);
@@ -65,6 +68,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// </summary>
         /// <param name="itemId">The item identifier.</param>
         /// <returns>The sale with the specified item identifier.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpGet("item/{itemId}")]
         public ActionResult<SaleDTO> GetSaleByItemId(int itemId) {
             try {
@@ -80,6 +84,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// Gets the total quantity of sales.
         /// </summary>
         /// <returns>The total quantity of sales.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpGet("quantity")]
         public ActionResult<int> GetSalesQuantity() {
             int quantity = salesService.GetSalesQuantity();
@@ -91,6 +96,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// </summary>
         /// <param name="categoryId">The category identifier.</param>
         /// <returns>The total quantity of sales for the specified category.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpGet("quantity/category/{categoryId}")]
         public ActionResult<int> GetSalesQuantityByItemCategory(int categoryId) {
             int quantity = salesService.GetSalesQuantityByItemCategory(categoryId);
@@ -101,6 +107,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// Gets the total sales price.
         /// </summary>
         /// <returns>The total sales price.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpGet("total-price")]
         public ActionResult<decimal> GetTotalSalesPrice() {
             decimal totalPrice = salesService.GetTotalSalesPrice();
@@ -112,6 +119,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// </summary>
         /// <param name="categoryId">The category identifier.</param>
         /// <returns>The total sales price for the specified category.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpGet("total-price/category/{categoryId}")]
         public ActionResult<decimal> GetTotalSalesPriceByItemCategory(int categoryId) {
             decimal totalPrice = salesService.GetTotalSalesPriceByItemCategory(categoryId);
@@ -123,6 +131,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// </summary>
         /// <param name="saleDTO">The sale data transfer object.</param>
         /// <returns>The created sale.</returns>
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult<SaleDTO> AddSale(SaleDTO saleDTO) {
             try {
