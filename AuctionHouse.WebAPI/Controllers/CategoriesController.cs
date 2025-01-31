@@ -14,7 +14,10 @@ namespace AuctionHouse.WebAPI.Controllers {
         private readonly ICategoriesService categoryService;
         public CategoriesController(ICategoriesService categoryService) => this.categoryService = categoryService;
 
-
+        /// <summary>
+        /// Retrieves all categories.
+        /// </summary>
+        /// <returns>A list of CategoryDTO objects.</returns>
         [HttpGet]
         public ActionResult<IEnumerable<CategoryDTO>> GetCategories() {
 
@@ -26,6 +29,11 @@ namespace AuctionHouse.WebAPI.Controllers {
 
         }
 
+        /// <summary>
+        /// Retrieves a specific category by ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to retrieve.</param>
+        /// <returns>A CategoryDTO object.</returns>
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<CategoryDTO>> GetCategory(int id) {
 
@@ -44,6 +52,11 @@ namespace AuctionHouse.WebAPI.Controllers {
             }
         }
 
+        /// <summary>
+        /// Adds a new category.
+        /// </summary>
+        /// <param name="categoryDTO">The category data to add.</param>
+        /// <returns>The created CategoryDTO object.</returns>
         [HttpPost]
         public ActionResult<CategoryDTO> AddCategory(CategoryDTO categoryDTO) {
 
@@ -56,6 +69,12 @@ namespace AuctionHouse.WebAPI.Controllers {
             return CreatedAtAction(nameof(GetCategory), new { id = newCategory }, newCategory);
         }
 
+        /// <summary>
+        /// Updates an existing category.
+        /// </summary>
+        /// <param name="id">The ID of the category to update.</param>
+        /// <param name="categoryDTO">The updated category data.</param>
+        /// <returns>The updated CategoryDTO object.</returns>
         [HttpPut("{id}")]
         public ActionResult<CategoryDTO> UpdateCategory(int id, CategoryDTO categoryDTO) {
 
@@ -73,18 +92,25 @@ namespace AuctionHouse.WebAPI.Controllers {
             }
         }
 
+        /// <summary>
+        /// Removes a category by ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to remove.</param>
+        /// <returns>No content if successful.</returns>
         [HttpDelete("{id}")]
         public IActionResult RemoveCategory(int id) {
-            try {if (categoryService.RemoveCategory(id) == null) {
-                return BadRequest();
+            try {
+                if (categoryService.RemoveCategory(id) == null) {
+                    return BadRequest();
+                }
+
+                categoryService.RemoveCategory(id);
+                return NoContent();
+
             }
-
-            categoryService.RemoveCategory(id);
-            return NoContent();
-
-            }catch(ArgumentException e) {
+            catch (ArgumentException e) {
                 return NotFound(e.Message);
-            }            
+            }
         }
     }
 }

@@ -7,15 +7,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuctionHouse.WebAPI.Services
 {
+    /// <summary>
+    /// Service for managing categories in the auction house.
+    /// </summary>
     public class CategoriesService : ICategoriesService {
         private readonly AuctionHouseContext context;
         private readonly IMapper mapper;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoriesService"/> class.
+        /// </summary>
+        /// <param name="mapper">The AutoMapper instance.</param>
+        /// <param name="auctionContext">The database context for the auction house.</param>
         public CategoriesService(IMapper mapper, AuctionHouseContext auctionContext) {
             this.mapper = mapper;
             context = auctionContext;
         }
-        public IEnumerable<CategoryDTO> GetCategories() {
 
+        /// <summary>
+        /// Gets all categories.
+        /// </summary>
+        /// <returns>A collection of CategoryDTO objects.</returns>
+        public IEnumerable<CategoryDTO> GetCategories() {
             if (this.context.Categories == null) {
                 return null;
             }
@@ -25,6 +38,11 @@ namespace AuctionHouse.WebAPI.Services
                            .ToList();
         }
 
+        /// <summary>
+        /// Gets a category by its identifier.
+        /// </summary>
+        /// <param name="id">The identifier of the category.</param>
+        /// <returns>A CategoryDTO object.</returns>
         public CategoryDTO GetCategory(int id) {
             var category = mapper.Map<CategoryDTO>(context.Categories.SingleOrDefault(c => c.Id == id));
 
@@ -39,6 +57,11 @@ namespace AuctionHouse.WebAPI.Services
             return category;
         }
 
+        /// <summary>
+        /// Adds a new category.
+        /// </summary>
+        /// <param name="categoryDTO">The category data transfer object.</param>
+        /// <returns>The added CategoryDTO object.</returns>
         public CategoryDTO AddCategory(CategoryDTO categoryDTO) {
             if (this.context.Categories == null) {
                 return null;
@@ -51,6 +74,11 @@ namespace AuctionHouse.WebAPI.Services
             return mapper.Map<CategoryDTO>(newCategory);
         }
 
+        /// <summary>
+        /// Removes a category by its identifier.
+        /// </summary>
+        /// <param name="id">The identifier of the category to remove.</param>
+        /// <returns>The removed CategoryDTO object.</returns>
         public CategoryDTO RemoveCategory(int id) {
             if (this.context.Categories == null) {
                 return null;
@@ -58,7 +86,7 @@ namespace AuctionHouse.WebAPI.Services
 
             var category = this.context.Categories.SingleOrDefault(c => c.Id == id);
             if (category == null) {
-               throw new ArgumentException("The category doesn't exists!");
+                throw new ArgumentException("The category doesn't exists!");
             }
 
             this.context.Categories.Remove(category);
@@ -67,6 +95,12 @@ namespace AuctionHouse.WebAPI.Services
             return mapper.Map<CategoryDTO>(category);
         }
 
+        /// <summary>
+        /// Updates an existing category.
+        /// </summary>
+        /// <param name="id">The identifier of the category to update.</param>
+        /// <param name="categoryDTO">The updated category data transfer object.</param>
+        /// <returns>The updated CategoryDTO object.</returns>
         public CategoryDTO UpdateCategory(int id, CategoryDTO categoryDTO) {
             if (this.context.Categories == null) {
                 return null;
