@@ -1,0 +1,1320 @@
+{
+	"info": {
+		"_postman_id": "9b1da02d-1312-45f4-8bad-bd9e73136d5f",
+		"name": "Laboratório Upskill - .NET",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40460116"
+	},
+	"item": [
+		{
+			"name": ".NET",
+			"item": [
+				{
+					"name": "Categories",
+					"item": [
+						{
+							"name": "Add Category S",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Clothes\",\r\n  \"description\": \"Clothes that belonged to celebrities \"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7257/api/Categories",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Categories"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Example of category",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"Antiques\",\r\n  \"description\": \"Rare objects from the Ming Dynasty\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/Categories",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"Categories"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "Add Category F",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Clothes\",\r\n  \"description\": 2,\r\n  \"totalPrice\": 20\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7257/api/Categories",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Categories"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Example of category",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"Antiques\",\r\n  \"description\": \"Rare objects from the Ming Dynasty\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/Categories",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"Categories"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "Get all categories",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.expect(pm.response).to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"pm.test(\"Response has correct schema\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.be.a('array')\r",
+											"    responseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.a('object')\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/Categories",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get category by ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.expect(pm.response).to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"pm.test(\"Response has correct schema\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.be.a('object');\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/Categories/1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Categories",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update category S",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Vehicles\",\r\n    \"description\": \"Famous vehicles to sell. Includes cars and motorclyces.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7257/api/Categories/1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Categories",
+										"1"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Update category",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Paintings\",\r\n    \"description\": \"Paintings by renowned artists from Portugal\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/Categories/2",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"Categories",
+												"2"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "Update category F",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Vehicles\",\r\n    \"description\": \"Famous vehicles to sell. Includes cars and motorclyces.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7257/api/Categories/1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Categories",
+										"1"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Update category",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Paintings\",\r\n    \"description\": \"Paintings by renowned artists from Portugal\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/Categories/2",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"Categories",
+												"2"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "Delete category S",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {\r",
+											"    pm.expect(pm.response).to.have.status(204);\r",
+											"});\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/Categories/9",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Categories",
+										"9"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete category F",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {\r",
+											"    pm.expect(pm.response).to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/Categories/950",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Categories",
+										"950"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Items",
+					"item": [
+						{
+							"name": "Get all items",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/Items",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Items"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get item by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/Items/2",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Items",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all available items",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.expect(pm.response).to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has correct schema\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.be.a('array');\r",
+											"    responseData.forEach(item => {\r",
+											"        pm.expect(item).to.be.a('object')\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/Items/available",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Items",
+										"available"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all sold items",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/Items/sold",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"Items",
+										"sold"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all items by categoryId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/items/category/3",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"items",
+										"category",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add new item",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7257/api/items",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"items"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "New item example",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Contos da Travessa\",\r\n    \"description\": \"Painting from Mariola Landowska\",\r\n    \"initialPrice\": 3000.00,\r\n    \"categoryId\": 2,\r\n    \"itemStatus\": 0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/items",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"items"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "Item with invalid price",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"MTG cards colletion\",\r\n    \"description\": \"Collection of MTG rare cards\",\r\n    \"initialPrice\": 0,\r\n    \"categoryId\": 2,\r\n    \"itemStatus\": 0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/items",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"items"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "Item with invalid category",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Anabelle doll\",\r\n    \"description\": \"Doll from Anabelle movie\",\r\n    \"initialPrice\": 500.00,\r\n    \"categoryId\": 10,\r\n    \"itemStatus\": 0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/items",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"items"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "Item with invalid status",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Monalisa Renew\",\r\n    \"description\": \"Painting from Davi Law\",\r\n    \"initialPrice\": 3000.00,\r\n    \"categoryId\": 2,\r\n    \"itemStatus\": 1\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/items",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"items"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "Update item",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7257/api/items/7",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"items",
+										"7"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Update item",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n        \"id\": 7,\r\n        \"name\": \"Superstar Queen earrings\",\r\n        \"description\": \"Star-shaped earrings from Queen Letizia of Spain\",\r\n        \"initialPrice\": 5000.00,\r\n        \"categoryId\": 3,\r\n        \"itemStatus\": 0\r\n    }",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/items/7",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"items",
+												"7"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "Delete item",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/items/9",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"items",
+										"9"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a specific item unsuccessfully",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {\r",
+											"    pm.expect(pm.response).to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/v1/items/2000",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"2000"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all items from a category that has no items Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {\r",
+											"    pm.expect(pm.response).to.have.status(204);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7040/api/v1/items/category/4",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7040",
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"category",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all items from a category that doesn't exist Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {\r",
+											"    pm.expect(pm.response).to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7040/api/v1/items/category/2000",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7040",
+									"path": [
+										"api",
+										"v1",
+										"items",
+										"category",
+										"2000"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sales",
+					"item": [
+						{
+							"name": "Add new Sale",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {\r",
+											"    pm.expect(pm.response).to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has correct schema\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.be.a('object')\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"itemId\": 5,\r\n    \"salePrice\": 200000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7257/api/sales",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"sales"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Add new Sale",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"itemId\": 2,\r\n    \"salePrice\": 400000\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/sales",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"sales"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "Invalid price",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"itemId\": 1,\r\n    \"salePrice\": 40000\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/sales",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"sales"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "Invalid item",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"itemId\": 15,\r\n    \"salePrice\": 400000\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/sales",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"sales"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "Invalid sale b/ item status",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"itemId\": 7,\r\n    \"salePrice\": 400000\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7257/api/sales",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"sales"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "Get all sales",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/sales",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"sales"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get sales by category",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/sales/category/1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"sales",
+										"category",
+										"1"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "No sales in the category",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:7257/api/sales/category/4",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7257",
+											"path": [
+												"api",
+												"sales",
+												"category",
+												"4"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
+						},
+						{
+							"name": "Get sale by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/sales/1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"sales",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get sale by item",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/sales/item/7",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"sales",
+										"item",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get sales quantity",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/sales/quantity",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"sales",
+										"quantity"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get sales quantity by category",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7257/api/sales/quantity/category/1",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7257",
+									"path": [
+										"api",
+										"sales",
+										"quantity",
+										"category",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get total sales price",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Get total sales price by category",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
