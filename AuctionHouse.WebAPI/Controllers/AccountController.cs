@@ -15,12 +15,23 @@ namespace AuctionHouse.WebAPI.Controllers {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration configuration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountController"/> class.
+        /// </summary>
+        /// <param name="userManager">The user manager.</param>
+        /// <param name="roleManager">The role manager.</param>
+        /// <param name="configuration">The configuration.</param>
         public AccountController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration) {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.configuration = configuration;
         }
 
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="model">The registration model.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the action.</returns>
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Register model) {
             var user = new IdentityUser { UserName = model.Username, Email = model.Email };
@@ -33,6 +44,11 @@ namespace AuctionHouse.WebAPI.Controllers {
             return BadRequest(result.Errors);
         }
 
+        /// <summary>
+        /// Logs in a user.
+        /// </summary>
+        /// <param name="model">The login model.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the action.</returns>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] Login model) {
             var user = await userManager.FindByNameAsync(model.Username);
@@ -60,6 +76,11 @@ namespace AuctionHouse.WebAPI.Controllers {
             return Unauthorized();
         }
 
+        /// <summary>
+        /// Adds a new role.
+        /// </summary>
+        /// <param name="role">The role name.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the action.</returns>
         [HttpPost("add-role")]
         public async Task<IActionResult> AddRole([FromBody] string role) {
             if (!await roleManager.RoleExistsAsync(role)) {
@@ -74,6 +95,11 @@ namespace AuctionHouse.WebAPI.Controllers {
             return BadRequest("Role already exists");
         }
 
+        /// <summary>
+        /// Assigns a role to a user.
+        /// </summary>
+        /// <param name="model">The user role model.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the action.</returns>
         [HttpPost("assign-role")]
         public async Task<IActionResult> AssignRole([FromBody] UserRole model) {
             var user = await userManager.FindByNameAsync(model.Username);
