@@ -4,6 +4,7 @@ using AuctionHouse.WebAPI.Models;
 using AuctionHouse.WebAPI.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AuctionHouse.WebAPI.Services {
     public class SalesService : ISalesService {
@@ -62,20 +63,28 @@ namespace AuctionHouse.WebAPI.Services {
             return mapper.Map<SaleDTO>(sale);
         }
 
-        public SaleDTO AddSale(int itemId, DateOnly dateOfSale, decimal salePrice) {
-            var item = context.Items.FirstOrDefault(i => i.Id == itemId);
+        public SaleDTO AddSale(SaleDTO saleDTO) {
+            var item = context.Items.SingleOrDefault(i => i.Id == saleDTO.ItemId);
             if (item == null) {
                 throw new ArgumentNullException("Provided itemId doesn't exists!");
             }
 
+            if(saleDTO.SalePrice < item.InitialPrice) {
+                throw new ArgumentException("Sale price can't be lower than item initial price!");
+            }
+
+            if(item.ItemStatus == ItemStatus.Sold) {
+                throw new InvalidOperationException("Failed to add new sale. The item is already sold!");
+            }
+
             var sale = new Sale {
-                ItemId = itemId,
+                ItemId = saleDTO.ItemId,
                 Item = item,
-                DateOfSale = dateOfSale,
-                SalePrice = salePrice
+                DateOfSale = DateOnly.FromDateTime(DateTime.Now),
+                SalePrice = saleDTO.SalePrice
             };
 
-            itemsService.UpdateItemStatus(itemId);
+            itemsService.UpdateItemStatus(saleDTO.ItemId);
             context.Sales.Add(sale);
             context.SaveChanges();
 

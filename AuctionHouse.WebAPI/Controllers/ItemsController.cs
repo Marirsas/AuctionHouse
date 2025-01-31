@@ -43,10 +43,18 @@ namespace AuctionHouse.WebAPI.Controllers {
 
         [HttpGet("category/{categoryId}")]
         public ActionResult<IEnumerable<ItemDTO>> GetItemsByCategory(int categoryId) {
-            if (itemService.GetItemsByCategory(categoryId) == null) {
-                return BadRequest();
+            try {
+                if (itemService.GetItemsByCategory(categoryId) == null) {
+                    return BadRequest();
+                }
+                return Ok(itemService.GetItemsByCategory(categoryId));
             }
-            return Ok(itemService.GetItemsByCategory(categoryId));
+            catch (InvalidOperationException e) {
+                return NotFound(e.Message);
+            }
+            catch (ArgumentException) {
+                return NoContent();
+            }
         }
 
         [HttpGet("{id}")]

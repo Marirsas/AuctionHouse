@@ -79,13 +79,17 @@ namespace AuctionHouse.WebAPI.Controllers {
         }
 
         [HttpPost]
-        public ActionResult<SaleDTO> AddSale(int itemId, DateOnly dateOfSale, decimal salePrice) {
+        public ActionResult<SaleDTO> AddSale(SaleDTO saleDTO) {
             try {
-                var sale = salesService.AddSale(itemId, dateOfSale,salePrice);
+                var sale = salesService.AddSale(saleDTO);
                 return CreatedAtAction(nameof(GetSale), new { id = sale.Id }, sale);
             }
             catch (ArgumentNullException ex) {
                 return BadRequest(ex.Message);
+            }catch(ArgumentException e) {
+                return BadRequest(e.Message);
+            }catch(InvalidOperationException f) {
+                return BadRequest(f.Message);
             }
         }
 

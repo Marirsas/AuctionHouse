@@ -11,7 +11,7 @@ namespace AuctionHouse.WebAPI.Services.Interfaces {
 
         SaleDTO GetSaleByItemId(int itemId);
 
-        SaleDTO AddSale(int itemId, DateOnly dateOfSale, decimal salePrice);
+        SaleDTO AddSale(SaleDTO saleDTO);
 
         decimal GetTotalSalesPrice();
 

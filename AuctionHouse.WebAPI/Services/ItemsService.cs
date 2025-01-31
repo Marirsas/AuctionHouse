@@ -4,6 +4,7 @@ using AuctionHouse.WebAPI.Models;
 using AuctionHouse.WebAPI.Services.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 
 namespace AuctionHouse.WebAPI.Services
@@ -11,10 +12,12 @@ namespace AuctionHouse.WebAPI.Services
     public class ItemsService : IItemsService {
         private readonly AuctionHouseContext context;
         private readonly IMapper mapper;
+        private readonly ICategoriesService categoryService;
 
-        public ItemsService(IMapper mapper, AuctionHouseContext auctionContext) {
+        public ItemsService(IMapper mapper, AuctionHouseContext auctionContext, ICategoriesService categoryService) {
             this.mapper = mapper;
             context = auctionContext;
+            this.categoryService = categoryService;
         }
 
 
@@ -51,16 +54,25 @@ namespace AuctionHouse.WebAPI.Services
                           .ToList();
         }
 
-        public IEnumerable<ItemDTO> GetItemsByCategory(int id) {
+        public IEnumerable<ItemDTO> GetItemsByCategory(int categoryId) {
 
             if (this.context.Items == null) {
                 return null;
             }
+                        
+            if(!context.Categories.Any(c=> c.Id == categoryId)){
+                throw new InvalidOperationException("The category doesn't exists!");
+            }
 
-            return context.Items
-                          .Where(i => i.CategoryId == id)
+            var itemsList = context.Items
+                          .Where(i => i.CategoryId == categoryId)
                           .Select(item => mapper.Map<ItemDTO>(item))
                           .ToList();
+
+            if(itemsList.IsNullOrEmpty()) {
+                throw new ArgumentException();
+            }
+            return itemsList;
         }
 
         public ItemDTO GetItem(int id) {

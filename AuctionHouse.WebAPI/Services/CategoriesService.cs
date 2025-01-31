@@ -58,7 +58,7 @@ namespace AuctionHouse.WebAPI.Services
 
             var category = this.context.Categories.SingleOrDefault(c => c.Id == id);
             if (category == null) {
-               return null;
+               throw new ArgumentException("The category doesn't exists!");
             }
 
             this.context.Categories.Remove(category);

@@ -59,29 +59,32 @@ namespace AuctionHouse.WebAPI.Controllers {
         [HttpPut("{id}")]
         public ActionResult<CategoryDTO> UpdateCategory(int id, CategoryDTO categoryDTO) {
 
-            if (categoryService.UpdateCategory(id, categoryDTO) == null) {
-                return BadRequest();
-            }
-
             try {
+                if (categoryService.UpdateCategory(id, categoryDTO) == null) {
+                    return BadRequest();
+                }
                 return Ok(categoryService.UpdateCategory(id, categoryDTO));
             }
             catch (ArgumentNullException e) {
                 return BadRequest(e.Message);
             }
             catch (ArgumentException g) {
-                return BadRequest(g.Message);
+                return NotFound(g.Message);
             }
         }
 
         [HttpDelete("{id}")]
         public IActionResult RemoveCategory(int id) {
-            if (categoryService.RemoveCategory(id) == null) {
+            try {if (categoryService.RemoveCategory(id) == null) {
                 return BadRequest();
             }
 
             categoryService.RemoveCategory(id);
             return NoContent();
+
+            }catch(ArgumentException e) {
+                return NotFound(e.Message);
+            }            
         }
     }
 }

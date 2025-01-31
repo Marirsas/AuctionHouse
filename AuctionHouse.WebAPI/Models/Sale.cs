@@ -13,7 +13,7 @@ namespace AuctionHouse.WebAPI.Models {
         public Item? Item { get; set; }
 
 
-        public DateOnly DateOfSale { get; set; }
+        public DateOnly? DateOfSale { get; set; }
 
 
         [Column(TypeName = "decimal(15, 2)")]
