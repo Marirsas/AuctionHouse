@@ -88,7 +88,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         [HttpGet("quantity")]
         public ActionResult<int> GetSalesQuantity() {
             int quantity = salesService.GetSalesQuantity();
-            return Ok(quantity);
+            return Ok(new { TotalQuantity = quantity });
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         [HttpGet("quantity/category/{categoryId}")]
         public ActionResult<int> GetSalesQuantityByItemCategory(int categoryId) {
             int quantity = salesService.GetSalesQuantityByItemCategory(categoryId);
-            return Ok(quantity);
+            return Ok(new { TotalQuantity = quantity });
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         [HttpGet("total-price")]
         public ActionResult<decimal> GetTotalSalesPrice() {
             decimal totalPrice = salesService.GetTotalSalesPrice();
-            return Ok(totalPrice);
+            return Ok(new { TotalValue = totalPrice });
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         [HttpGet("total-price/category/{categoryId}")]
         public ActionResult<decimal> GetTotalSalesPriceByItemCategory(int categoryId) {
             decimal totalPrice = salesService.GetTotalSalesPriceByItemCategory(categoryId);
-            return Ok(totalPrice);
+            return Ok(new { TotalValue = totalPrice });
         }
 
         /// <summary>
