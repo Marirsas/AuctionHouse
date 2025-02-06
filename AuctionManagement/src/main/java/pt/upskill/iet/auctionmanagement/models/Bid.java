@@ -1,11 +1,9 @@
 package pt.upskill.iet.auctionmanagement.models;
-
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import pt.upskill.iet.auctionmanagement.dto.BidDTO;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @NoArgsConstructor
@@ -23,17 +21,18 @@ public class Bid {
     @NonNull
     private Auction auction;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
+    @JsonIgnore
     private Client client;
 
     @NonNull
-    private double bidPrice;
+    private double bidAmount;
 
     @NonNull
-    private Date bidDate;
+    private LocalDate bidDate;
 
-    public static Bid fromBidDTO(BidDTO bidDTO, Auction auction, Client client) {
-        return new Bid(bidDTO.getBidId(), auction, client, bidDTO.getBidPrice(), bidDTO.getBidDate());
+    public Bid(Auction auction, Client client, double bidAmount, LocalDate bidDate) {
     }
+
 }

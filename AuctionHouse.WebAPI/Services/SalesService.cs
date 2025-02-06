@@ -113,7 +113,7 @@ namespace AuctionHouse.WebAPI.Services {
                 SalePrice = saleDTO.SalePrice
             };
 
-            itemsService.UpdateItemStatus(saleDTO.ItemId);
+            itemsService.UpdateItemStatus(saleDTO.ItemId, ItemStatus.Sold);
             context.Sales.Add(sale);
             context.SaveChanges();
 

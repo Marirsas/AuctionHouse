@@ -98,7 +98,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// </summary>
         /// <param name="item">The ItemDTO object to add.</param>
         /// <returns>The created ItemDTO object.</returns>
-        [Authorize(Roles = "Admin")]
+      
         [HttpPost]
         public ActionResult<ItemDTO> AddItem(ItemDTO item) {
             if (item == null) {
@@ -126,7 +126,7 @@ namespace AuctionHouse.WebAPI.Controllers {
         /// <param name="id">The ID of the item to update.</param>
         /// <param name="itemDTO">The updated ItemDTO object.</param>
         /// <returns>An ActionResult.</returns>
-        [Authorize(Roles = "Admin")]
+        
         [HttpPut("{id}")]
         public ActionResult<Item> UpdateItem(int id, ItemDTO itemDTO) {
             if (itemService.UpdateItem(id, itemDTO) == null) {
@@ -148,12 +148,27 @@ namespace AuctionHouse.WebAPI.Controllers {
             }
         }
 
+        [HttpPatch("{id}/{status}")]
+        public ActionResult<Item> UpdateItemStatus(int id, ItemStatus status) {
+            try {
+                itemService.UpdateItemStatus(id, status);
+                return Ok();
+            }
+            catch (ArgumentNullException e) {
+                return NotFound(e.Message);
+            }
+            catch (InvalidOperationException f) {
+                return BadRequest(f.Message);
+            }
+            
+        }
+
         /// <summary>
         /// Deletes an item by ID.
         /// </summary>
         /// <param name="id">The ID of the item to delete.</param>
         /// <returns>An IActionResult.</returns>
-        [Authorize(Roles = "Admin")]
+
         [HttpDelete("{id}")]
         public IActionResult DeleteItem(int id) {
             if (itemService.RemoveItem(id) == null) {

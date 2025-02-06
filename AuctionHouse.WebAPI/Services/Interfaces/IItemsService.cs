@@ -66,6 +66,6 @@ namespace AuctionHouse.WebAPI.Services.Interfaces
         /// </summary>
         /// <param name="itemId">The item ID.</param>
         /// <returns>True if the status was updated successfully, otherwise false.</returns>
-        Boolean UpdateItemStatus(int itemId);
+        Boolean UpdateItemStatus(int itemId, ItemStatus itemStatus);
     }
 }

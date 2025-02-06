@@ -185,7 +185,7 @@ namespace AuctionHouse.WebAPI.Services
         /// </summary>
         /// <param name="itemId">The item ID.</param>
         /// <returns>True if the status was updated successfully, otherwise false.</returns>
-        public bool UpdateItemStatus(int itemId) {
+        public bool UpdateItemStatus(int itemId, ItemStatus itemStatus) {
             var item = context.Items.FirstOrDefault(i => i.Id == itemId);
             if (item == null) {
                 throw new ArgumentNullException("Item not found!");
@@ -193,7 +193,7 @@ namespace AuctionHouse.WebAPI.Services
             if (item.ItemStatus == ItemStatus.Sold) {
                 throw new InvalidOperationException("Item already sold");
             }
-            item.ItemStatus = ItemStatus.Sold;
+            item.ItemStatus = itemStatus;
             context.SaveChanges();
             return true;
         }

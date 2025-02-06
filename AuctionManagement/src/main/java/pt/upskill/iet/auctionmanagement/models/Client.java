@@ -1,9 +1,13 @@
 package pt.upskill.iet.auctionmanagement.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import pt.upskill.iet.auctionmanagement.dto.BidDTO;
 import pt.upskill.iet.auctionmanagement.dto.ClientDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +21,7 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long clientId;
 
     @NonNull
     private String name;
@@ -25,13 +29,5 @@ public class Client {
     @NonNull
     private String nif;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Bid> bidList;
 
-    public static Client fromClientDTO(ClientDTO clientDTO) {
-        List<Bid> bidList = clientDTO.getBidList().stream()
-                .map(BidDTO::toBid)
-                .collect(Collectors.toList());
-        return new Client(clientDTO.getClientId(), clientDTO.getName(), clientDTO.getNif(), bidList);
-    }
 }

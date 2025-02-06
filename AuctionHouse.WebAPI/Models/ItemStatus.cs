@@ -9,8 +9,13 @@
         Available = 0,
 
         /// <summary>
+        /// The item is in auction process.
+        /// </summary>
+        Pending = 1,
+
+        /// <summary>
         /// The item has been sold.
         /// </summary>
-        Sold = 1
+        Sold = 2
     }
 }
