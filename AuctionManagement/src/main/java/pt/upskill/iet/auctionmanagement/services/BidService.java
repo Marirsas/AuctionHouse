@@ -14,4 +14,9 @@ public interface BidService {
     BidDTO updateBid(Long id, BidDTO bidDTO);
 
     void deleteBid(Long id);
+
+    //Obter todos os bids de um cliente
+    List<BidDTO> getAllBidsByClientId(long clientId);
+
+    List<BidDTO> getAllBidsByAuctionId(long auctionId);
 }

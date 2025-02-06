@@ -70,4 +70,16 @@ public class BidController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<List<BidDTO>> getAllBidsByClientId(@PathVariable long clientId) {
+        List<BidDTO> bids = bidService.getAllBidsByClientId(clientId);
+        return ResponseEntity.ok(bids);
+    }
+
+    @GetMapping("/auction/{auctionId}")
+    public ResponseEntity<List<BidDTO>> getAllBidsByAuctionId(@PathVariable long auctionId) {
+        List<BidDTO> bids = bidService.getAllBidsByAuctionId(auctionId);
+        return ResponseEntity.ok(bids);
+    }
 }

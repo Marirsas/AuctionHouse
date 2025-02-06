@@ -2,6 +2,8 @@ package pt.upskill.iet.auctionmanagement.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pt.upskill.iet.auctionmanagement.dto.AuctionDTO;
+import pt.upskill.iet.auctionmanagement.dto.BidDTO;
 import pt.upskill.iet.auctionmanagement.dto.ClientDTO;
 import pt.upskill.iet.auctionmanagement.exceptions.ResourceNotFoundException;
 import pt.upskill.iet.auctionmanagement.models.Client;
@@ -73,5 +75,4 @@ public class ClientServiceImpl implements ClientService {
             throw new ResourceNotFoundException("Cliente não encontrado com id " + clientId);
         }
     }
-
 }

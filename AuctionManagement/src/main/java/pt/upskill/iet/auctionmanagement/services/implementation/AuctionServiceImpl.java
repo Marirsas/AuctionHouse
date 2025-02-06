@@ -3,10 +3,7 @@ package pt.upskill.iet.auctionmanagement.services.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import pt.upskill.iet.auctionmanagement.dto.AuctionDTO;
-import pt.upskill.iet.auctionmanagement.dto.ItemDTO;
-import pt.upskill.iet.auctionmanagement.dto.ItemStatusDTO;
-import pt.upskill.iet.auctionmanagement.dto.SaleDTO;
+import pt.upskill.iet.auctionmanagement.dto.*;
 import pt.upskill.iet.auctionmanagement.exceptions.ResourceNotFoundException;
 import pt.upskill.iet.auctionmanagement.models.Auction;
 import pt.upskill.iet.auctionmanagement.models.Bid;
@@ -42,6 +39,7 @@ public class AuctionServiceImpl implements AuctionService {
         try {
             // Obtém os detalhes do item da API externa
             ItemDTO itemDetails = itemService.getItemDetails(auctionDTO.getItemId()).block();
+            System.out.println(itemDetails.toString());
 
             if (itemDetails == null) {
                 throw new ResourceNotFoundException("Item não encontrado na API externa.");
@@ -142,6 +140,22 @@ public class AuctionServiceImpl implements AuctionService {
         } else {
             throw new ResourceNotFoundException("Leilão não encontrado com id " + auctionId);
         }
+    }
+
+    @Override
+    public List<AuctionDTO> getAuctionsByClient(long clientId) {
+        List<Auction> auctions = bidRepository.findAuctionsByClientId(clientId);
+        return auctions.stream()
+                .map(AuctionDTO::fromAuctionToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AuctionDTO> getWonAuctionsByClient(long clientId) {
+        List<Auction> wonAuctions = bidRepository.findWonAuctionsByClientId(clientId);
+        return wonAuctions.stream()
+                .map(AuctionDTO::fromAuctionToDto)
+                .collect(Collectors.toList());
     }
 }
 

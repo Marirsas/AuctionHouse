@@ -66,5 +66,17 @@ public class AuctionController {
     public ResponseEntity<String> handleException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno: " + ex.getMessage());
     }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<List<AuctionDTO>> getAuctionsByClient(@PathVariable long clientId) {
+        List<AuctionDTO> auctions = auctionService.getAuctionsByClient(clientId);
+        return ResponseEntity.ok(auctions);
+    }
+
+    @GetMapping("/clientWon/{clientId}")
+    public ResponseEntity<List<AuctionDTO>> getWonAuctionsByClient(@PathVariable Long clientId) {
+        List<AuctionDTO> wonAuctions = auctionService.getWonAuctionsByClient(clientId);
+        return ResponseEntity.ok(wonAuctions);
+    }
 }
 

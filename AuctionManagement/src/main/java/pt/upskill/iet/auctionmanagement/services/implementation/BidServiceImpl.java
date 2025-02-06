@@ -3,15 +3,18 @@ package pt.upskill.iet.auctionmanagement.services.implementation;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import pt.upskill.iet.auctionmanagement.dto.BidDTO;
+import pt.upskill.iet.auctionmanagement.dto.ItemDTO;
+import pt.upskill.iet.auctionmanagement.exceptions.ResourceNotFoundException;
 import pt.upskill.iet.auctionmanagement.models.Auction;
 import pt.upskill.iet.auctionmanagement.models.Bid;
 import pt.upskill.iet.auctionmanagement.models.Client;
+import pt.upskill.iet.auctionmanagement.models.Item;
 import pt.upskill.iet.auctionmanagement.repositories.AuctionRepository;
 import pt.upskill.iet.auctionmanagement.repositories.BidRepository;
 import pt.upskill.iet.auctionmanagement.repositories.ClientRepository;
 import pt.upskill.iet.auctionmanagement.services.BidService;
+import pt.upskill.iet.auctionmanagement.services.ItemService;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,12 +24,14 @@ public class BidServiceImpl implements BidService {
     private final BidRepository bidRepository;
     private final AuctionRepository auctionRepository;
     private final ClientRepository clientRepository;
+    private final ItemService itemService;
 
 
-    public BidServiceImpl(BidRepository bidRepository, AuctionRepository auctionRepository, ClientRepository clientRepository) {
+    public BidServiceImpl(BidRepository bidRepository, AuctionRepository auctionRepository, ClientRepository clientRepository, ItemService itemService) {
         this.bidRepository = bidRepository;
         this.auctionRepository = auctionRepository;
         this.clientRepository = clientRepository;
+        this.itemService = itemService;
     }
 
     @Override
@@ -41,6 +46,15 @@ public class BidServiceImpl implements BidService {
         if (optionalAuction.isEmpty() || optionalClient.isEmpty()) {
             throw new ResourceAccessException("Auction or Client not found.");
         }
+
+        ItemDTO itemDetails = itemService.getItemDetails(optionalAuction.get().getItemId()).block();
+
+        assert itemDetails != null;
+        if (bidDTO.getBidAmount() < itemDetails.getInitialPrice()) {
+            throw new IllegalArgumentException("Bid amount must be greater than the Item base price: " + itemDetails.getInitialPrice());
+        }
+
+
 
         Auction auction = optionalAuction.get();
         Client client = optionalClient.get();
@@ -113,5 +127,31 @@ public class BidServiceImpl implements BidService {
             throw new ResourceAccessException("Bid not found");
         }
         bidRepository.deleteById(id);
+    }
+
+    @Override
+    public List<BidDTO> getAllBidsByClientId(long clientId) {
+        Optional<Client> clientOptional = clientRepository.findById(clientId);
+        if (clientOptional.isPresent()) {
+            Client client = clientOptional.get();
+            List<Bid> bids = bidRepository.findByClient(client);
+            return bids.stream()
+                    .map(BidDTO::fromBidToDto)
+                    .collect(Collectors.toList());
+        }
+        throw new ResourceNotFoundException("Cliente não encontrado com id " + clientId);
+    }
+
+    @Override
+    public List<BidDTO> getAllBidsByAuctionId(long auctionId) {
+        Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
+        if (auctionOptional.isPresent()) {
+            Auction auction = auctionOptional.get();
+            List<Bid> bids = bidRepository.findByAuction(auction);
+            return bids.stream()
+                    .map(BidDTO::fromBidToDto)
+                    .collect(Collectors.toList());
+        }
+        throw new ResourceNotFoundException("Leilão não encontrado com id " + auctionId);
     }
 }

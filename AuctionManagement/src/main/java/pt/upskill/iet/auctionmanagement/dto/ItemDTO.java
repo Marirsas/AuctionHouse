@@ -1,28 +1,17 @@
 package pt.upskill.iet.auctionmanagement.dto;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class ItemDTO {
     private int id;
     private String name;
     private ItemStatusDTO itemStatus;
     private CategoryDTO category;
-
-
-    // Getters e Setters
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public CategoryDTO getCategory() {
-        return category;
-    }
-
-    public ItemStatusDTO getItemStatus() {
-        return itemStatus;
-    }
+    private double initialPrice;
 }
 
