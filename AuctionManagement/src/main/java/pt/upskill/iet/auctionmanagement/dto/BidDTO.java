@@ -1,9 +1,6 @@
 package pt.upskill.iet.auctionmanagement.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pt.upskill.iet.auctionmanagement.models.Auction;
 import pt.upskill.iet.auctionmanagement.models.Bid;
 import pt.upskill.iet.auctionmanagement.models.Client;
@@ -17,6 +14,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
+
 public class BidDTO {
     private long id;
     private long auctionId;
@@ -44,7 +42,7 @@ public class BidDTO {
         Auction auction = auctionRepository.findById(bidDTO.getAuctionId())
                 .orElseThrow(() -> new IllegalArgumentException("Auction not found with ID: " + bidDTO.getAuctionId()));
 
-        return new Bid(auction, user, bidDTO.bidAmount,bidDTO.bidDate); // 0 para ID e itemId
+        return new Bid(auction, user, bidDTO.getBidAmount(), bidDTO.getBidDate());
     }
 
 }

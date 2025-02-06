@@ -88,7 +88,8 @@ public class AuctionServiceImpl implements AuctionService {
                 auctionRepository.save(auction); // Atualiza no banco
 
                 // Busca o lance de maior valor no banco de dados para este leilão
-                Optional<Bid> highestBid = bidRepository.findTopByAuctionIdOrderByBidAmountDesc(auction.getAuctionId());
+
+                Optional<Bid> highestBid = bidRepository.findTopByAuctionOrderByBidAmountDesc(auction);
 
                 if (highestBid.isPresent()) {
                     SaleDTO sale = new SaleDTO(auction.getItemId(), highestBid.get().getBidAmount());

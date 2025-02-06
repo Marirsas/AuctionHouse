@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/auctions")
 public class AuctionController {
-
+    @Autowired
     private final AuctionService auctionService;
 
     public AuctionController(AuctionService auctionService) {

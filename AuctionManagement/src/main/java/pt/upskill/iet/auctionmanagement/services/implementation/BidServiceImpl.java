@@ -51,7 +51,8 @@ public class BidServiceImpl implements BidService {
         }
 
         // Busca no banco de dados o maior lance para este leilão
-        Optional<Bid> lastBid = bidRepository.findTopByAuctionIdOrderByBidAmountDesc(auction.getAuctionId());
+        Optional<Bid> lastBid = bidRepository.findTopByAuctionOrderByBidAmountDesc(auction);
+
 
         if (lastBid.isPresent() && bidDTO.getBidAmount() <= lastBid.get().getBidAmount()) {
             throw new IllegalArgumentException("The bid amount must be greater than the last bid.");

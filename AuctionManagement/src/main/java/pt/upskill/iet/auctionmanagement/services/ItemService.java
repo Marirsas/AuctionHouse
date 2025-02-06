@@ -1,7 +1,6 @@
 package pt.upskill.iet.auctionmanagement.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -10,8 +9,6 @@ import pt.upskill.iet.auctionmanagement.dto.ItemStatusDTO;
 import pt.upskill.iet.auctionmanagement.dto.SaleDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Service
 public class ItemService {
@@ -61,12 +58,15 @@ public class ItemService {
                 .bodyToMono(Void.class);  // Não espera um corpo na resposta
     }
 
-    public Mono<Void> createSale(SaleDTO saleDTO) {
-        return webClientBuilder.build().post()
-                .uri("/sales")  // Suponha que esse seja o endpoint correto
-                .bodyValue(saleDTO)
+    public void createSale(SaleDTO sale) {
+        webClientBuilder.build()
+                .post()
+                .uri("sales")  // Suponha que esse seja o endpoint correto
+                .bodyValue(sale)
                 .retrieve()
-                .bodyToMono(Void.class);  // Não espera um corpo na resposta
+                .bodyToMono(Void.class)
+                .block();
+
     }
 
 }
