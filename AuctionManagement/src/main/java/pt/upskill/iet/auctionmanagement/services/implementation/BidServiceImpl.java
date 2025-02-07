@@ -8,7 +8,6 @@ import pt.upskill.iet.auctionmanagement.exceptions.ResourceNotFoundException;
 import pt.upskill.iet.auctionmanagement.models.Auction;
 import pt.upskill.iet.auctionmanagement.models.Bid;
 import pt.upskill.iet.auctionmanagement.models.Client;
-import pt.upskill.iet.auctionmanagement.models.Item;
 import pt.upskill.iet.auctionmanagement.repositories.AuctionRepository;
 import pt.upskill.iet.auctionmanagement.repositories.BidRepository;
 import pt.upskill.iet.auctionmanagement.repositories.ClientRepository;
