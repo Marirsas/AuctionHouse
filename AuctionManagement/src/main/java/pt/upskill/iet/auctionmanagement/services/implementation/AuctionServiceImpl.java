@@ -11,12 +11,10 @@ import pt.upskill.iet.auctionmanagement.repositories.AuctionRepository;
 import pt.upskill.iet.auctionmanagement.repositories.BidRepository;
 import pt.upskill.iet.auctionmanagement.services.AuctionService;
 import pt.upskill.iet.auctionmanagement.services.ItemService;
+import reactor.core.publisher.Flux;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +36,7 @@ public class AuctionServiceImpl implements AuctionService {
     public AuctionDTO createAuction(AuctionDTO auctionDTO) {
         try {
             // Obtém os detalhes do item da API externa
-            ItemDTO itemDetails = itemService.getItemDetails(auctionDTO.getItemId()).block();
+            ItemDTO itemDetails = itemService.getItemDetails(auctionDTO.getItemId());
             System.out.println(itemDetails.toString());
 
             if (itemDetails == null) {
@@ -46,7 +44,7 @@ public class AuctionServiceImpl implements AuctionService {
             }
 
             // Atualiza o status do item na API externa
-            itemService.updateItemStatus(itemDetails.getId(), ItemStatusDTO.Pending).block();
+            itemService.updateItemStatus(itemDetails.getId(), ItemStatusDTO.Pending);
 
             // Criar e salvar o Auction
             Auction auction = new Auction();
@@ -67,6 +65,7 @@ public class AuctionServiceImpl implements AuctionService {
     // Obter um leilão por ID
     @Override
     public AuctionDTO getAuctionById(long auctionId) {
+        closeAuctions();
         Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
         if (auctionOptional.isPresent()) {
             return AuctionDTO.fromAuctionToDto(auctionOptional.get());
@@ -77,63 +76,51 @@ public class AuctionServiceImpl implements AuctionService {
     // Obter todos os leilões
     @Override
     public List<AuctionDTO> getAllAuctions() {
+        closeAuctions();
         List<Auction> auctions = auctionRepository.findAll();
-        LocalDate today = LocalDate.now();
-
-        for (Auction auction : auctions) {
-            if (auction.getFinalDate().isBefore(today) && auction.isOpen()) {
-                auction.setOpen(false);
-                auctionRepository.save(auction); // Atualiza no banco
-
-                // Busca o lance de maior valor no banco de dados para este leilão
-
-                Optional<Bid> highestBid = bidRepository.findTopByAuctionOrderByBidAmountDesc(auction);
-
-                if (highestBid.isPresent()) {
-                    SaleDTO sale = new SaleDTO(auction.getItemId(), highestBid.get().getBidAmount());
-                    itemService.createSale(sale);
-                } else {
-                    // Caso não tenha lances, atualiza o status do item para disponível
-                    ItemDTO itemDetails = itemService.getItemDetails(auction.getItemId()).block();
-                    if (itemDetails != null && itemDetails.getItemStatus() == ItemStatusDTO.Pending) {
-                        itemService.updateItemStatus(itemDetails.getId(), ItemStatusDTO.Available).block();
-                    }
-                }
-            }
-        }
-
         return auctions.stream()
                 .map(AuctionDTO::fromAuctionToDto)  // Convertendo cada Auction para AuctionDTO
                 .collect(Collectors.toList());
     }
 
-    // Atualizar um leilão existente
-    @Override
-    public AuctionDTO updateAuction(long auctionId, AuctionDTO auctionDTO) {
-        Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
-        if (auctionOptional.isPresent()) {
-            Auction auction = auctionOptional.get();
-            // Atualizando os campos do leilão com os dados do AuctionDTO
-            auction.setStartDate(auctionDTO.getStartDate());
-            auction.setFinalDate(auctionDTO.getFinalDate());
-            auction.setOpen(auctionDTO.isOpen());
-            auction = auctionRepository.save(auction);  // Salvando as alterações no banco
-
-            return AuctionDTO.fromAuctionToDto(auction);
-        }
-        throw new ResourceNotFoundException("Leilão não encontrado com id " + auctionId);
-    }
+//    // Atualizar um leilão existente
+//    @Override
+//    public AuctionDTO updateAuction(long auctionId, AuctionDTO auctionDTO) {
+//        closeAuctions();
+//        Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
+//        if (auctionOptional.isPresent()) {
+//            Auction auction = auctionOptional.get();
+//            // Atualizando os campos do leilão com os dados do AuctionDTO
+//            auction.setStartDate(auctionDTO.getStartDate());
+//            auction.setFinalDate(auctionDTO.getFinalDate());
+//            auction.setOpen(auctionDTO.isOpen());
+//            auction = auctionRepository.save(auction);  // Salvando as alterações no banco
+//
+//            return AuctionDTO.fromAuctionToDto(auction);
+//        }
+//        throw new ResourceNotFoundException("Leilão não encontrado com id " + auctionId);
+//    }
 
     // Excluir um leilão
     @Override
     public void deleteAuction(long auctionId) {
+        closeAuctions();
         Optional<Auction> auctionOptional = auctionRepository.findById(auctionId);
+        if(!auctionOptional.get().isOpen() && auctionOptional.get().getFinalDate().isBefore(LocalDate.now())){
+            throw new ResourceNotFoundException("Leilão não pode ser excluído pois já foi encerrado.");
+        }
+        Optional<Bid> highestBid = bidRepository.findTopByAuctionOrderByBidAmountDesc(auctionOptional.get());
+
+        if(highestBid.isPresent()){
+            throw new ResourceNotFoundException("Leilão não pode ser excluído pois já possui lances.");
+        }
+
         if (auctionOptional.isPresent()) {
             Auction auction = auctionOptional.get();
-            ItemDTO itemDetails = itemService.getItemDetails(auction.getItemId()).block();
+            ItemDTO itemDetails = itemService.getItemDetails(auction.getItemId());
 
             if (itemDetails != null && itemDetails.getItemStatus() == ItemStatusDTO.Pending) {
-                itemService.updateItemStatus(itemDetails.getId(), ItemStatusDTO.Available).block();
+                itemService.updateItemStatus(itemDetails.getId(), ItemStatusDTO.Available);
             }
 
             auctionRepository.delete(auction);  // Excluindo o leilão do banco
@@ -156,6 +143,41 @@ public class AuctionServiceImpl implements AuctionService {
         return wonAuctions.stream()
                 .map(AuctionDTO::fromAuctionToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ItemDTO> getAvailableItems() {
+        closeAuctions();
+        return  Arrays.stream(itemService.getItemsAvailable()).toList();
+    }
+
+
+    public void closeAuctions() {
+        List<Auction> auctions = auctionRepository.findAll();
+        LocalDate today = LocalDate.now();
+        if(!auctions.isEmpty()){
+            for (Auction auction : auctions) {
+                if (auction.getFinalDate().isBefore(today) && auction.isOpen()) {
+                    auction.setOpen(false);
+                    auctionRepository.save(auction); // Atualiza no banco
+
+                    // Busca o lance de maior valor no banco de dados para este leilão
+
+                    Optional<Bid> highestBid = bidRepository.findTopByAuctionOrderByBidAmountDesc(auction);
+
+                    if (highestBid.isPresent()) {
+                        SaleDTO sale = new SaleDTO(auction.getItemId(), highestBid.get().getBidAmount());
+                        itemService.createSale(sale);
+                    } else {
+                        // Caso não tenha lances, atualiza o status do item para disponível
+                        ItemDTO itemDetails = itemService.getItemDetails(auction.getItemId());
+                        if (itemDetails != null && itemDetails.getItemStatus() == ItemStatusDTO.Pending) {
+                            itemService.updateItemStatus(itemDetails.getId(), ItemStatusDTO.Available);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

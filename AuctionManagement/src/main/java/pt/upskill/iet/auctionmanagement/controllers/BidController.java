@@ -50,15 +50,15 @@ public class BidController {
         }
     }
 
-    // Atualizar um lance existente
-    @PutMapping("/{id}")
-    public ResponseEntity<BidDTO> updateBid(@PathVariable Long id, @RequestBody BidDTO bidDTO) {
-        try {
-            return ResponseEntity.ok(bidService.updateBid(id, bidDTO));
-        } catch (ResourceAccessException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
+//    // Atualizar um lance existente
+//    @PutMapping("/{id}")
+//    public ResponseEntity<BidDTO> updateBid(@PathVariable Long id, @RequestBody BidDTO bidDTO) {
+//        try {
+//            return ResponseEntity.ok(bidService.updateBid(id, bidDTO));
+//        } catch (ResourceAccessException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//    }
 
     // Excluir um lance
     @DeleteMapping("/{id}")

@@ -46,14 +46,12 @@ public class BidServiceImpl implements BidService {
             throw new ResourceAccessException("Auction or Client not found.");
         }
 
-        ItemDTO itemDetails = itemService.getItemDetails(optionalAuction.get().getItemId()).block();
+        ItemDTO itemDetails = itemService.getItemDetails(optionalAuction.get().getItemId());
 
         assert itemDetails != null;
         if (bidDTO.getBidAmount() < itemDetails.getInitialPrice()) {
             throw new IllegalArgumentException("Bid amount must be greater than the Item base price: " + itemDetails.getInitialPrice());
         }
-
-
 
         Auction auction = optionalAuction.get();
         Client client = optionalClient.get();
@@ -97,30 +95,6 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public BidDTO updateBid(Long id, BidDTO bidDTO) {
-        Optional<Bid> optionalBid = this.bidRepository.findById(id);
-        Optional<Client> user = clientRepository.findById(bidDTO.getClientId());
-        Optional<Auction> auction = auctionRepository.findById(bidDTO.getAuctionId());
-        if (auction.isEmpty()) {
-            throw new ResourceAccessException("Auction not found");
-        }
-
-        if (optionalBid.isEmpty()) {
-            throw new ResourceAccessException("Bid not found");
-        }
-        if (user.isEmpty()) {
-            throw new ResourceAccessException("User not found");
-        }
-
-        Bid bid = BidDTO.fromDtoToBid(auctionRepository, clientRepository, bidDTO);
-        bid.setClient(user.get());
-        bid.setAuction(auction.get());
-        bid.setBidAmount(bidDTO.getBidAmount());
-        bid = bidRepository.save(bid);
-        return BidDTO.fromBidToDto(bid);
-    }
-
-    @Override
     public void deleteBid(Long id) {
         if (!bidRepository.existsById(id)) {
             throw new ResourceAccessException("Bid not found");
@@ -153,4 +127,29 @@ public class BidServiceImpl implements BidService {
         }
         throw new ResourceNotFoundException("Leilão não encontrado com id " + auctionId);
     }
+
+
+//    @Override
+//    public BidDTO updateBid(Long id, BidDTO bidDTO) {
+//        Optional<Bid> optionalBid = this.bidRepository.findById(id);
+//        Optional<Client> user = clientRepository.findById(bidDTO.getClientId());
+//        Optional<Auction> auction = auctionRepository.findById(bidDTO.getAuctionId());
+//        if (auction.isEmpty()) {
+//            throw new ResourceAccessException("Auction not found");
+//        }
+//
+//        if (optionalBid.isEmpty()) {
+//            throw new ResourceAccessException("Bid not found");
+//        }
+//        if (user.isEmpty()) {
+//            throw new ResourceAccessException("User not found");
+//        }
+//
+//        Bid bid = BidDTO.fromDtoToBid(auctionRepository, clientRepository, bidDTO);
+//        bid.setClient(user.get());
+//        bid.setAuction(auction.get());
+//        bid.setBidAmount(bidDTO.getBidAmount());
+//        bid = bidRepository.save(bid);
+//        return BidDTO.fromBidToDto(bid);
+//    }
 }

@@ -21,41 +21,47 @@ public class ItemService {
     }
 
     // Método para consumir a API externa e obter as informações do item
-    public Mono<ItemDTO> getItemDetails(int itemId) {
-        return webClientBuilder.build().get()
-                .uri("/items/{itemId}", itemId)
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, response ->
-                        Mono.error(new RuntimeException("Item não encontrado: " + itemId)))  // Trata erro 404
-                .onStatus(HttpStatusCode::is5xxServerError, response ->
-                        Mono.error(new RuntimeException("Erro no servidor ao buscar item: " + itemId)))  // Trata erro 500
-                .bodyToMono(ItemDTO.class)
-                .doOnError(error -> System.err.println("Erro ao buscar item: " + error.getMessage())); // Log do erro
+    public ItemDTO getItemDetails(int itemId) {
+        try {
+            return webClientBuilder.build().get()
+                    .uri("/items/{itemId}", itemId)
+                    .retrieve()
+                    .bodyToMono(ItemDTO.class)
+                    .block();
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("404")) {
+                throw new RuntimeException("Item não encontrado: " + itemId);
+            } else if (e.getMessage().contains("500")) {
+                throw new RuntimeException("Erro no servidor ao buscar item: " + itemId);
+            } else {
+                throw new RuntimeException("Erro ao buscar item: " + e.getMessage());
+            }
+        }
     }
 
-    public Flux<ItemDTO> getItems() {
+    public ItemDTO[] getItems() {
         return webClientBuilder
                 .build()
                 .get()
                 .uri("items/available")
                 .retrieve()
-                .bodyToFlux(ItemDTO.class);
+                .bodyToMono(ItemDTO[].class).block();
     }
 
-    public Flux<ItemDTO> getItemsAvailable() {
+    public ItemDTO[] getItemsAvailable() {
         return webClientBuilder
                 .build()
                 .get()
                 .uri("items/available")
                 .retrieve()
-                .bodyToFlux(ItemDTO.class);
+                .bodyToMono(ItemDTO[].class).block();
     }
 
-    public Mono<Void> updateItemStatus(int itemId, ItemStatusDTO status) {
+    public ItemDTO updateItemStatus(int itemId, ItemStatusDTO status) {
         return webClientBuilder.build().patch()
                 .uri("/items/{id}/{status}", itemId, status)  // Suponha que esse seja o endpoint correto
                 .retrieve()
-                .bodyToMono(Void.class);  // Não espera um corpo na resposta
+                .bodyToMono(ItemDTO.class).block();  // Não espera um corpo na resposta
     }
 
     public void createSale(SaleDTO sale) {

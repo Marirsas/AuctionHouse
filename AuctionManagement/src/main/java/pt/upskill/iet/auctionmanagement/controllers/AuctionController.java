@@ -6,8 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pt.upskill.iet.auctionmanagement.dto.AuctionDTO;
+import pt.upskill.iet.auctionmanagement.dto.ItemDTO;
 import pt.upskill.iet.auctionmanagement.exceptions.ResourceNotFoundException;
 import pt.upskill.iet.auctionmanagement.services.AuctionService;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -41,12 +43,12 @@ public class AuctionController {
         return ResponseEntity.ok(auctionService.getAllAuctions());
     }
 
-    // Atualizar um leilão existente
-    @PutMapping("/{auctionId}")
-    public ResponseEntity<AuctionDTO> updateAuction(@PathVariable long auctionId, @Valid @RequestBody AuctionDTO auctionDTO) {
-        AuctionDTO updatedAuction = auctionService.updateAuction(auctionId, auctionDTO);
-        return ResponseEntity.ok(updatedAuction);
-    }
+//    // Atualizar um leilão existente
+//    @PutMapping("/{auctionId}")
+//    public ResponseEntity<AuctionDTO> updateAuction(@PathVariable long auctionId, @Valid @RequestBody AuctionDTO auctionDTO) {
+//        AuctionDTO updatedAuction = auctionService.updateAuction(auctionId, auctionDTO);
+//        return ResponseEntity.ok(updatedAuction);
+//    }
 
     // Excluir um leilão
     @DeleteMapping("/{auctionId}")
@@ -78,5 +80,12 @@ public class AuctionController {
         List<AuctionDTO> wonAuctions = auctionService.getWonAuctionsByClient(clientId);
         return ResponseEntity.ok(wonAuctions);
     }
+
+    @GetMapping("/availableItems")
+    public ResponseEntity<List<ItemDTO>> getAvailableItems() {
+        List<ItemDTO> items = auctionService.getAvailableItems();
+        return ResponseEntity.ok(items);
+    }
+
 }
 

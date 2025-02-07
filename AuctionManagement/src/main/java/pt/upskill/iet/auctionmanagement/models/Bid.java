@@ -2,7 +2,6 @@ package pt.upskill.iet.auctionmanagement.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 
 @RequiredArgsConstructor
@@ -32,7 +31,6 @@ public class Bid {
     @NonNull
     private LocalDate bidDate;
 
-    public Bid(Auction auction, Client client, double bidAmount, LocalDate bidDate) {
-    }
+
 
 }

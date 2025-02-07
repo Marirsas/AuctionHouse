@@ -11,7 +11,7 @@ public interface BidService {
 
     BidDTO getBidById(Long id);
 
-    BidDTO updateBid(Long id, BidDTO bidDTO);
+//    BidDTO updateBid(Long id, BidDTO bidDTO);
 
     void deleteBid(Long id);
 
@@ -19,4 +19,6 @@ public interface BidService {
     List<BidDTO> getAllBidsByClientId(long clientId);
 
     List<BidDTO> getAllBidsByAuctionId(long auctionId);
+
+
 }
