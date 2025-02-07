@@ -31,6 +31,7 @@ public class Bid {
     @NonNull
     private LocalDate bidDate;
 
-
+    public Bid(Auction auction, Client client, double bidAmount, LocalDate bidDate) {
+    }
 
 }
